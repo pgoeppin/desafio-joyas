@@ -1,6 +1,5 @@
 const {
   getJewels,
-  prepareHATEOAS,
   getFilteredJewel,
 } = require("../models/jewelModels");
 
@@ -29,6 +28,24 @@ const getFilteredJewels = async (req, res) => {
   const jewels = await getFilteredJewel(queryStrings)
   res.json(jewels);
 };
+
+const prepareHATEOAS = (jewels) => {
+
+    const results = jewels.map((jewel) => {
+        return {
+            name: jewel.nombre,
+            href: `/joyas/joya/${jewel.id}`,
+        }
+    }).slice(0, 4)
+    const totalJoyas = jewels.length
+    const stockTotal = jewels.map(jewel => jewel.stock).reduce((a,b) => a + b)
+    const HATEOAS = {
+        totalJoyas,
+        stockTotal,
+        results
+    }
+    return HATEOAS
+}
 
 module.exports = {
   getAllJewels,

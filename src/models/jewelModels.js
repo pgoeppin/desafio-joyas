@@ -12,24 +12,6 @@ const getJewels = async ({limits = 4, order_by = "id_ASC", page = 1}) => {
     return jewels;
 }
 
-const prepareHATEOAS = (jewels) => {
-
-    const results = jewels.map((jewel) => {
-        return {
-            name: jewel.nombre,
-            href: `/joyas/joya/${jewel.id}`,
-        }
-    }).slice(0, 4)
-    const totalJoyas = jewels.length
-    const stockTotal = jewels.map(jewel => jewel.stock).reduce((a,b) => a + b)
-    const HATEOAS = {
-        totalJoyas,
-        stockTotal,
-        results
-    }
-    return HATEOAS
-}
-
 const getFilteredJewel = async ({ precio_max, precio_min, categoria, metal }) => {
     let filters = []
     if (precio_max) filters.push(`precio <= ${precio_max}`)
@@ -47,4 +29,4 @@ const getFilteredJewel = async ({ precio_max, precio_min, categoria, metal }) =>
     return jewels
 }
 
-module.exports = { getJewels, prepareHATEOAS, getFilteredJewel }
+module.exports = { getJewels, getFilteredJewel }
