@@ -1,7 +1,4 @@
-const {
-  getJewels,
-  getFilteredJewel,
-} = require("../models/jewelModels");
+const { getJewels, getFilteredJewel } = require("../models/jewelModels");
 
 const getAllJewels = async (req, res) => {
   const limits = req.query.limits;
@@ -24,28 +21,34 @@ const getAllJewels = async (req, res) => {
 };
 
 const getFilteredJewels = async (req, res) => {
-  const queryStrings = req.query
-  const jewels = await getFilteredJewel(queryStrings)
-  res.json(jewels);
+  const queryStrings = req.query;
+  try {
+    const jewels = await getFilteredJewel(queryStrings);
+    res.json(jewels);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ message: "Error 500. Nose pudo obtener los datos" });
+  }
 };
 
 const prepareHATEOAS = (jewels) => {
-
-    const results = jewels.map((jewel) => {
-        return {
-            name: jewel.nombre,
-            href: `/joyas/joya/${jewel.id}`,
-        }
-    }).slice(0, 4)
-    const totalJoyas = jewels.length
-    const stockTotal = jewels.map(jewel => jewel.stock).reduce((a,b) => a + b)
-    const HATEOAS = {
-        totalJoyas,
-        stockTotal,
-        results
-    }
-    return HATEOAS
-}
+  const results = jewels
+    .map((jewel) => {
+      return {
+        name: jewel.nombre,
+        href: `/joyas/joya/${jewel.id}`,
+      };
+    })
+    .slice(0, 4);
+  const totalJoyas = jewels.length;
+  const stockTotal = jewels.map((jewel) => jewel.stock).reduce((a, b) => a + b);
+  const HATEOAS = {
+    totalJoyas,
+    stockTotal,
+    results,
+  };
+  return HATEOAS;
+};
 
 module.exports = {
   getAllJewels,
