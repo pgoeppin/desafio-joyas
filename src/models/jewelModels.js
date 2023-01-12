@@ -29,4 +29,21 @@ const prepareHATEOAS = (jewels) => {
     return HATEOAS
 }
 
-module.exports = { getJewels, prepareHATEOAS }
+const getFilteredJewel = async ({ precio_max, precio_min, categoria, metal }) => {
+    let filters = []
+    if (precio_max) filters.push(`precio <= ${precio_max}`)
+    if (precio_min) filters.push(`precio >= ${precio_min}`)
+    if (categoria) filters.push(`categoria = '${categoria}'`)
+    if (metal) filters.push(`metal = '${metal}'`)
+    let query = 'SELECT * FROM inventario'
+    
+    if (filters.length > 0) {
+        filters = filters.join(' AND ')
+        query += ` WHERE ${filters}`
+    }
+    console.log(query)
+    const { rows: jewels } = await pool.query(query)
+    return jewels
+}
+
+module.exports = { getJewels, prepareHATEOAS, getFilteredJewel }
