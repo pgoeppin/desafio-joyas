@@ -5,6 +5,7 @@ const format = require('pg-format');
 const getJewels = async ({limits = 4, order_by = "id_ASC", page = 1}) => {
     const [field, direction] = order_by.split("_");
     const offset = (page - 1) * limits
+    // ¿Por que offset con page-1? Para que la primera pagina sea 1 y no 0
     const formattedQuery = format('SELECT * FROM inventario ORDER BY %s %s LIMIT %s OFFSET %s', field, direction, limits, offset);
     const { rows: jewels } = await pool.query(formattedQuery);
     console.log(jewels);
