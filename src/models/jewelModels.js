@@ -1,4 +1,4 @@
-const pool = require("../helpers/connectionDB").getInstance();
+const pool = require("../database/connectionDB").pool
 const format = require('pg-format');
 
 
@@ -18,8 +18,7 @@ const getFilteredJewel = async ({ precio_max, precio_min, categoria, metal }) =>
     if (precio_min) filters.push(`precio >= ${precio_min}`)
     if (categoria) filters.push(`categoria = '${categoria}'`)
     if (metal) filters.push(`metal = '${metal}'`)
-    let query = 'SELECT * FROM inventario'
-    
+    let query = 'SELECT * FROM inventario' 
     if (filters.length > 0) {
         filters = filters.join(' AND ')
         query += ` WHERE ${filters}`
