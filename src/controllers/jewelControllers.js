@@ -27,7 +27,7 @@ const getFilteredJewels = async (req, res) => {
     res.json(jewels);
   } catch (e) {
     console.log(e);
-    res.status(500).json({ message: "Error 500. No se pudo obtener los datos" });
+    res.status(500).json({ message: "Error 500. No se pudo obtener los datos. Por favor revise sus parametros" });
   }
 };
 

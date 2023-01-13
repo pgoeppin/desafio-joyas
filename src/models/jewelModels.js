@@ -8,7 +8,8 @@ const getJewels = async ({limits = 4, order_by = "id_ASC", page = 1}) => {
     // ¿Por que offset con page-1? Para que la primera pagina sea 1 y no 0
     const formattedQuery = format('SELECT * FROM inventario ORDER BY %s %s LIMIT %s OFFSET %s', field, direction, limits, offset);
     const { rows: jewels } = await pool.query(formattedQuery);
-    console.log(jewels);
+    // console.log(jewels);
+    console.log(formattedQuery);
     return jewels;
 }
 
